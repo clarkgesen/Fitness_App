@@ -5,7 +5,7 @@ const path = require('path');
 
 const PORT = process.env.PORT || 3800;
 
-const db = require("./Develop/models");
+const db = require("./models");
 
 const app = express();
 
@@ -14,26 +14,28 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static(__dirname + '/Develop/public'));
-console.log((__dirname + '/Develop/public'));
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost/workout")
+
+app.use(express.static(__dirname + '/public'));
+console.log((__dirname + '/public'));
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populatedb", { useNewUrlParser: true });
 
 
 app.get("/", (req, res) => {
     console.log(res);
-    res.sendFile(path.join(__dirname, '../Fitness_App/Develop/public', 'index.html'));
+    res.sendFile(path.join(__dirname, '/public', 'index.html'));
     
 });
 
 app.get("/exercise", (req, res) => {
     console.log(res);
-    res.sendFile(path.join(__dirname, '../Fitness_App/Develop/public', 'exercise.html'));
+    res.sendFile(path.join(__dirname, '/public', 'exercise.html'));
     
 });
 
 app.get("/stats", (req, res) => {
     console.log(res);
-    res.sendFile(path.join(__dirname, '../Fitness_App/Develop/public', 'stats.html'));
+    res.sendFile(path.join(__dirname, '/public', 'stats.html'));
 });
 
 
