@@ -1,32 +1,53 @@
 const router = require('express').Router();
-const axios = require('axios');
 
-router.post('/exercise', (req, res) => {
-    const exercise = req.body;
-    // console.log(activity);
-    db.Activity.create(activity)
-      .then((results) => {
-        res.json({
-          success: true,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          errors: err.errors,
-        });
+// **look into path**
+const path = require('path');
+const db = require('../models')
+
+// POST create, create a new activity
+router.post('/workouts', (req, res) => {
+  const activity = req.body;
+  // console.log(activity);
+  db.Workout.create(workout)
+    .then((results) => {
+      res.json({
+        success: true,
       });
-  });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        errors: err.errors,
+      });
+    });
+});
 
-  router.get("/workouts", (req, res) => {
-    db.Workout.find({})
-    .sort({date: -1})
-    .then(dbWorkout => {
-      console.log(dbWorkout);
-      res.json(dbWorkout);
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    })
+// PUT updates an activity by id
+router.put('/workouts/:id', (req, res) => {
+  db.Workout.findByIdAndUpdate(req.params.id, {
+    $push: {
+      exercises: req.body
+    }
+  }).then((results) => {
+    res.json({
+      success: true,
+    });
   })
+  .catch((err) => {
+    res.status(500).json({
+      success: false,
+      errors: err.errors,
+    });
+  });
+});
+
+
+router.get('/workouts', (req, res) => {
+  db.Workout.find()
+    .then((workout) => {
+      // console.log(weight);
+      res.json(workout);
+    });
+});
+
+module.exports = router;
