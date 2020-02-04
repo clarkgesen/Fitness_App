@@ -50,4 +50,17 @@ router.get('/workouts', (req, res) => {
     });
 });
 
+router.get('/workouts/range', (req, res) => {
+  db.Workout
+  .find({})
+  .sort({day: -1})
+  .limit(7)
+  .then(dbWorkout => {
+    res.json(dbWorkout);
+  }).catch(err => {
+    res.json(err);
+  });
+    
+});
+
 module.exports = router;
